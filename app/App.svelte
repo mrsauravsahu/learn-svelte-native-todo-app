@@ -35,7 +35,7 @@
         <tabContentItem>
             <gridLayout rows="auto, *" columns="*">
                 <label textWrap="true">These are your completed todos. Great work!</label>
-                <listView items={completedTodos} row="1">
+                <listView items={completedTodos} row="1" on:itemTap={handleDoneTap}>
                     <Template let:item>
                         <label text={item.text} />
                     </Template>
@@ -61,29 +61,51 @@
     }
 
     const removeFromList = (list, item) => list.filter(p => p !== item)
-    const addToList = (list, item) => ([...list, item])
+    const addToList = (list, item) => ([item, ...list])
 
     async function handleTodoTap ({ index }) {
-        console.log(`Todo at index: ${index} was tapped.`)
-        console.log(JSON.stringify(todos[index], undefined, 2))
-
         const result = await action('What do you want to do with this task?', 'Cancel', [
-            'Mark Completed', 'Delete'
+            'Mark Completed', 'Delete Forever'
         ])
 
         const todo = todos[index]
-        todos = removeFromList(todos, todo)
         
         switch (result) {
             case "Mark Completed":
                 completedTodos = addToList(completedTodos, todo)
-                break;
+                todos = removeFromList(todos, todo)
+                break
 
-            case "Delete":
+            case "Delete Forever":
+                todos = removeFromList(todos, todo)
+                break
+
             default:
-                break;
+                break
         }
     }
+
+    async function handleDoneTap ({ index }) {
+        const result = await action("What do you want to do with this task?", 'Cancel', [
+            'Mark To Do',
+            'Delete Forever'
+        ])
+
+        const todo = completedTodos[index]
+
+        switch(result) {
+            case 'Mark To Do':
+                todos = addToList(todos, todo)
+                completedTodos = removeFromList(completedTodos, todo)
+                break
+            case 'Delete Forever':
+                completedTodos = removeFromList(completedTodos, todo)
+                break
+            default:
+                break
+        }
+    }
+
 </script>
 
 <style>
