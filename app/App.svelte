@@ -8,11 +8,27 @@
         </tabStrip>
 
         <tabContentItem>
-            <gridLayout columns="2*,*" rows="70,*">
-                <!-- <label textWrap="true" columnSpan="2">These are still yet to do. Check 'em off.</label> -->
+            <gridLayout columns="*, auto" rows="auto, *, auto">
+                {#if todos.length === 0}
+                    <label 
+                        row="0"
+                        colSpan="2"
+                        textWrap="true"
+                        columnSpan="2"
+                        text="Looks like you're all caught up... A-OK."
+                    />
+                {:else}
+                    <label 
+                        row="0"
+                        colSpan="2"
+                        textWrap="true"
+                        columnSpan="2"
+                        text="These are still yet to do. Check 'em off."
+                    />
+                {/if}
                 <textField
                     col="0"
-                    row="0"
+                    row="2"
                     bind:text={todoText}
                     hint="What do you need to get done?"
                     editable="true"
@@ -20,7 +36,7 @@
                 />
                 <button
                     col="1"
-                    row="0"
+                    row="2"
                     text="add todo"
                     on:tap={handleAddTodo}
                 />
@@ -34,7 +50,15 @@
         </tabContentItem>
         <tabContentItem>
             <gridLayout rows="auto, *" columns="*">
-                <label textWrap="true">These are your completed todos. Great work!</label>
+                {#if completedTodos.length === 0}
+                    <label
+                        textWrap="true"
+                        text="Hmm... time to finsh some left off todos, huh?" />
+                {:else}
+                    <label
+                        textWrap="true"
+                        text="These are your completed todos. Great work!" />
+                {/if} 
                 <listView items={completedTodos} row="1" on:itemTap={handleDoneTap}>
                     <Template let:item>
                         <label text={item.text} />
