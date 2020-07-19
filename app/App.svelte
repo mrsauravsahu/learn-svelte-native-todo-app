@@ -35,6 +35,7 @@
                     on:returnPress={handleAddTodo}
                 />
                 <button
+                    class="-primary"
                     col="1"
                     row="2"
                     text="add todo"
