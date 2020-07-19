@@ -63,7 +63,7 @@
                 {/if} 
                 <listView items={completedTodos} row="1" on:itemTap={handleDoneTap}>
                     <Template let:item>
-                        <label text={item.text} />
+                        <label text={item.text} class='todo--completed'/>
                     </Template>
                 </listView>
             </gridLayout>
@@ -136,10 +136,14 @@
 
 <style>
     label {
-        margin: 8;
+        margin: 16;
     }
 
     textField {
         font-size: 16;
+    }
+
+    .todo--completed {
+        text-decoration: line-through;
     }
 </style>
