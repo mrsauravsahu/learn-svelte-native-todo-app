@@ -8,27 +8,10 @@
         </tabStrip>
 
         <tabContentItem>
-            <gridLayout columns="*, auto" rows="auto, *, auto">
-                {#if todos.length === 0}
-                    <label 
-                        row="0"
-                        colSpan="2"
-                        textWrap="true"
-                        columnSpan="2"
-                        text="Looks like you're all caught up... A-OK."
-                    />
-                {:else}
-                    <label 
-                        row="0"
-                        colSpan="2"
-                        textWrap="true"
-                        columnSpan="2"
-                        text="These are still yet to do. Check 'em off."
-                    />
-                {/if}
+            <gridLayout columns="2*, *" rows="auto, auto, *">
                 <textField
                     col="0"
-                    row="2"
+                    row="0"
                     bind:text={todoText}
                     hint="What do you need to get done?"
                     editable="true"
@@ -37,12 +20,30 @@
                 <button
                     class="-primary"
                     col="1"
-                    row="2"
+                    row="0"
                     text="add todo"
                     on:tap={handleAddTodo}
                 />
+                
+                {#if todos.length === 0}
+                    <label 
+                        row="1"
+                        colSpan="2"
+                        textWrap="true"
+                        columnSpan="2"
+                        text="Looks like you're all caught up... A-OK."
+                    />
+                {:else}
+                    <label 
+                        row="1"
+                        colSpan="2"
+                        textWrap="true"
+                        columnSpan="2"
+                        text="These are still yet to do. Check 'em off."
+                    />
+                {/if}
 
-                <listView items={todos} row="1" colSpan="2" on:itemTap={handleTodoTap}>
+                <listView items={todos} row="2" colSpan="2" on:itemTap={handleTodoTap}>
                     <Template let:item>
                         <label text={item.text} textWrap="true" />
                     </Template>
@@ -136,5 +137,9 @@
 <style>
     label {
         margin: 8;
+    }
+
+    textField {
+        font-size: 16;
     }
 </style>
