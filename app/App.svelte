@@ -8,13 +8,50 @@
         </tabStrip>
 
         <tabContentItem>
-            <label textWrap="true">These are still yet to do. Check 'em off.</label>
+            <gridLayout columns="2*,*" rows="70,*">
+                <!-- <label textWrap="true" columnSpan="2">These are still yet to do. Check 'em off.</label> -->
+                <textField
+                    col="0"
+                    row="0"
+                    bind:text={todoText}
+                    hint="What do you need to get done?"
+                    editable="true"
+                    on:returnPress={handleAddTodo}
+                />
+                <button
+                    col="1"
+                    row="0"
+                    text="add todo"
+                    on:tap={handleAddTodo}
+                />
+
+                <listView items={todos} row="1" colSpan="2">
+                    <Template let:item>
+                        <label text={item.text} textWrap="true" />
+                    </Template>
+                </listView>
+            </gridLayout>
         </tabContentItem>
         <tabContentItem>
             <label textWrap="true">These are your completed todos. Great work!</label>
         </tabContentItem>
     </tabs>
 </page>
+
+<script>
+    import { Template } from 'svelte-native/components'
+
+    let todos = [ { text: 'finish the todo app!' } ];
+    let todoText = '';
+
+    function handleAddTodo () { 
+        if(todoText !== ''){
+            todos = [ { text: todoText }, ...todos]
+
+            todoText = ''
+        }
+    }
+</script>
 
 <style>
     label {
