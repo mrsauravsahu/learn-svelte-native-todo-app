@@ -33,7 +33,14 @@
             </gridLayout>
         </tabContentItem>
         <tabContentItem>
-            <label textWrap="true">These are your completed todos. Great work!</label>
+            <gridLayout rows="auto, *" columns="*">
+                <label textWrap="true">These are your completed todos. Great work!</label>
+                <listView items={completedTodos} row="1">
+                    <Template let:item>
+                        <label text={item.text} />
+                    </Template>
+                </listView>
+            </gridLayout>
         </tabContentItem>
     </tabs>
 </page>
@@ -41,7 +48,8 @@
 <script>
     import { Template } from 'svelte-native/components'
 
-    let todos = [ { text: 'finish the todo app!' } ];
+    let todos = [];
+    let completedTodos = [];
     let todoText = '';
 
     function handleAddTodo () { 
@@ -52,9 +60,29 @@
         }
     }
 
-    function handleTodoTap ({ index }) {
+    const removeFromList = (list, item) => list.filter(p => p !== item)
+    const addToList = (list, item) => ([...list, item])
+
+    async function handleTodoTap ({ index }) {
         console.log(`Todo at index: ${index} was tapped.`)
         console.log(JSON.stringify(todos[index], undefined, 2))
+
+        const result = await action('What do you want to do with this task?', 'Cancel', [
+            'Mark Completed', 'Delete'
+        ])
+
+        const todo = todos[index]
+        todos = removeFromList(todos, todo)
+        
+        switch (result) {
+            case "Mark Completed":
+                completedTodos = addToList(completedTodos, todo)
+                break;
+
+            case "Delete":
+            default:
+                break;
+        }
     }
 </script>
 
