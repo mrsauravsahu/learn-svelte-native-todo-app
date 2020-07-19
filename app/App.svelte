@@ -25,7 +25,7 @@
                     on:tap={handleAddTodo}
                 />
 
-                <listView items={todos} row="1" colSpan="2">
+                <listView items={todos} row="1" colSpan="2" on:itemTap={handleTodoTap}>
                     <Template let:item>
                         <label text={item.text} textWrap="true" />
                     </Template>
@@ -50,6 +50,11 @@
 
             todoText = ''
         }
+    }
+
+    function handleTodoTap ({ index }) {
+        console.log(`Todo at index: ${index} was tapped.`)
+        console.log(JSON.stringify(todos[index], undefined, 2))
     }
 </script>
 
